@@ -11,20 +11,25 @@
 @if (Request.IsAuthenticated && isAdmin == true)
 {
     <h2>Administration</h2>
+    <br />
 
     <div class="content-wrapper">
         <div class="float-left">
             <nav>
                 <ul id="menu">
+                    <li>@Html.ActionLink("Créditer", "Index")</li>   
                     <li>@Html.ActionLink("Equipes", "IndexEquipes")</li>
                     <li>@Html.ActionLink("Tournois", "IndexTournois")</li>
                     <li>@Html.ActionLink("Matchs", "IndexMatchs")</li>
                     <li>@Html.ActionLink("Jeux", "IndexJeux")</li>
-                    <li>@Html.ActionLink("Créditer les utilisateurs", "Crediter")</li>                    
                 </ul>
             </nav>
         </div>
     </div>
+    <br />
+    <br />
+    <br />
+    @Html.ActionLink("Créditer tous les utilisateurs", "Crediter", null, new { @class = "btn btn-success" })
     
 }
 else
