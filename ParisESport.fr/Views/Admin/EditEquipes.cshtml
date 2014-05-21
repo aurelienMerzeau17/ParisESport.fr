@@ -1,0 +1,67 @@
+﻿@using ParisESport.fr.Models;
+@model ParisESport.fr.Models.Equipes
+
+@{
+    ViewBag.Title = "Edit";
+}
+@{
+                            paris_e_sportEntities db = new paris_e_sportEntities();
+                            bool isAdmin = (from i in db.UserProfile
+                                            where i.UserName == WebSecurity.CurrentUserName
+                                            select i.User_infos.FirstOrDefault().admin).FirstOrDefault();
+}
+@if (Request.IsAuthenticated && isAdmin == true)
+                        {
+<h2>Edit</h2>
+
+using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Equipes</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.nom)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.nom)
+            @Html.ValidationMessageFor(model => model.nom)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.pays)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.pays)
+            @Html.ValidationMessageFor(model => model.pays)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.description)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.description)
+            @Html.ValidationMessageFor(model => model.description)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "IndexEquipes")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+                        }
+else
+{
+    Response.Redirect("~/Admin/Login");
+}

@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.lstEquipes = Session["SessionEquipes"];
+}
+@if (ViewBag.lstEquipes != null)
+{
+    int i = 0;
+    foreach (ParisESport.fr.Models.Equipes rM in ViewBag.lstEquipes)
+    {
+        using (Ajax.BeginForm("SupprimerEquipeSelected", "Admin", new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ListEquipesSelected" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <input type="text" disabled="disabled" value="@rM.nom" />
+            <input type="hidden" name="suptagsEqu" value="@i" />
+            <input type="submit" value="Supprimer" />
+            i++;
+        }
+    }
+}

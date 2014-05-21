@@ -1,0 +1,120 @@
+﻿@using ParisESport.fr.Models;
+@model List<ParisESport.fr.Models.Matchs>
+@{
+    ViewBag.Title = "Paris eSport";
+
+    Matchs ProMatch = Model.Where(c => c.date > DateTime.Now).First();
+    paris_e_sportEntities db = new paris_e_sportEntities();
+
+    List<paris_user> listpu = db.paris_user.Where(c => c.match_id == ProMatch.Id).ToList();
+    int nbparismatch = listpu.Count();
+    int nbp1 = listpu.Where(c => c.resultat_parie == 0).Count();
+    int nbp2 = listpu.Where(c => c.resultat_parie == 2).Count();
+    double f;
+    if (nbp1 != 0 && nbp2 != 0)
+    {
+        f = nbp1 / nbp2;
+    }
+    else
+    {
+        f = 1;
+    }
+    Fraction frac = new Fraction(f);
+
+    List<UserProfile> MeilleursParieurs = new List<UserProfile>();
+    MeilleursParieurs = db.UserProfile.OrderByDescending(c => c.paris_user.Count).ToList();
+}
+
+
+<div class="row">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Prochain Match</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 matchdujour" id="imgMatchdujour">
+            @*<img src="/Images/MatchDuJour.png" />*@
+            <div id="divEq1">
+                <h2>@ProMatch.Equipes.nom</h2>
+                <h3>Cote : @frac.Numerator</h3>
+            </div>
+            <div id="divEq2">
+                <h2>@ProMatch.Equipes1.nom</h2>
+                <h3>Cote : @frac.Denominator</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4" align="center">
+            @if (Request.IsAuthenticated)
+            {
+                paris_user pu = db.paris_user.Where(c => c.user_id == db.UserProfile.Where(i => i.UserName == WebSecurity.CurrentUserName).FirstOrDefault().UserId && c.match_id == ProMatch.Id).FirstOrDefault();
+                if (pu != null)
+                {
+                    <p>Vous avez déja parié sur ce match</p>
+                }
+                else
+                {
+                    @Ajax.ActionLink("Parier", "Parier", "Matchs", new { id = ProMatch.Id }, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "paris" }, new { @class = "btn btn-success btn-lg btn-parier" })
+                }
+            }
+            else
+            {
+                <p>Inscrivez-vous ou connectez-vous pour pouvoir parier.</p>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Les prochains matchs</h3>
+        <table class="table table-hover">
+            <tr>
+                <th>Match :</th>
+                <th>Date :</th>
+            </tr>
+            @foreach (Matchs m in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.Label(m.Equipes.nom + " VS " + m.Equipes1.nom)
+                    </td>
+                    <td>
+                        @Html.Label(m.date.ToShortDateString())
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h3>Nos meilleurs parieurs</h3>
+        <table class="table table-hover">
+            <tr>
+                <th>Nom :</th>
+                <th>Nombre de paris :</th>
+            </tr>
+            @{
+                int lim = MeilleursParieurs.Count;
+                if (lim >= 5)
+                {
+                    lim = 5;
+                }
+            }
+            @for (int i = 0; i < lim; i++)
+            {
+                <tr>
+                    <td>
+                        @Html.Label(MeilleursParieurs.ElementAt(i).UserName)
+                    </td>
+                    <td>
+                        @Html.Label(MeilleursParieurs.ElementAt(i).paris_user.Count.ToString())
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+<div id="paris"></div>

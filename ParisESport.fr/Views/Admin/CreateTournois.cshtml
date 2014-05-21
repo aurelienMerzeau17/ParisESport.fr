@@ -1,0 +1,108 @@
+﻿@using ParisESport.fr.Models;
+
+@model ParisESport.fr.Models.Tournois
+
+@{
+    ViewBag.Title = "Create";
+}
+@{
+                            paris_e_sportEntities db = new paris_e_sportEntities();
+                            bool isAdmin = (from i in db.UserProfile
+                                            where i.UserName == WebSecurity.CurrentUserName
+                                            select i.User_infos.FirstOrDefault().admin).FirstOrDefault();
+}
+@if (Request.IsAuthenticated && isAdmin == true)
+                        {
+<h2>Create</h2>
+<script>
+    $(function () {
+        $("#tagsEquipes").autocomplete({
+            source: function (request, response) {
+                var val = {};
+                val.searchEqu = $("#tagsEquipes").val();
+                $.ajax({
+                    url: "/Admin/getListEquipesAutoComplete/",
+                    method: "post",
+                    data: val,
+                    dataType: "json",
+                    success: function (data) {
+                        JSON.stringify(data);
+                        response($.map(data, function (v, i) {
+                            return {
+                                label: v.nom,
+                                value: v.nom
+                            }
+                        }));
+                    }
+                });
+            }
+        });
+    });
+</script>
+<div class="editor-label">
+    @Html.Label("Equipes :")
+</div>
+
+    using (Ajax.BeginForm("AutoCompleteEquipes", "Admin", new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "ListEquipesSelected" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <input id="tagsEquipes" type="text" name="tagsEquipes" />
+        <input type="submit" value="Ajouter" />
+    }
+    <div id="ListEquipesSelected"></div>
+
+    using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Tournois</legend>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.nom)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.nom)
+                @Html.ValidationMessageFor(model => model.nom)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.date)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.date)
+                @Html.ValidationMessageFor(model => model.date)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.description)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.description)
+                @Html.ValidationMessageFor(model => model.description)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.jeu_id, "Jeux")
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("jeu_id", String.Empty)
+                @Html.ValidationMessageFor(model => model.jeu_id)
+            </div>
+
+            <p>
+                <input type="submit" value="Create" />
+            </p>
+        </fieldset>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "IndexTournois")
+    </div>
+                        }
+else
+{
+    Response.Redirect("~/Admin/Login");
+}

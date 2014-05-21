@@ -1,0 +1,41 @@
+﻿@using ParisESport.fr.Models;
+@model ParisESport.fr.Models.Jeux
+
+@{
+    ViewBag.Title = "Details";
+}
+@{
+                            paris_e_sportEntities db = new paris_e_sportEntities();
+                            bool isAdmin = (from i in db.UserProfile
+                                            where i.UserName == WebSecurity.CurrentUserName
+                                            select i.User_infos.FirstOrDefault().admin).FirstOrDefault();
+}
+@if (Request.IsAuthenticated && isAdmin == true)
+                        {
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Jeux</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.nom)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.nom)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.description)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.description)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Back to List", "IndexJeux")
+</p>
+                        }
+else
+{
+    Response.Redirect("~/Admin/Login");
+}

@@ -1,0 +1,45 @@
+﻿@model ParisESport.fr.Models.LoginModel
+
+@{
+    ViewBag.Title = "Se connecter";
+}
+
+<section id="loginForm">
+    <h2>Utilisez un compte local pour vous connecter.</h2>
+    @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+    
+        <form role="form">
+          <div class="form-group">
+              @Html.LabelFor(m => m.UserName)
+              @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+          </div>
+          <div class="form-group">              
+              @Html.LabelFor(m => m.Password)
+              @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"> Mémoriser le mot de passe?
+            </label>
+          </div>
+          <button type="submit" class="btn btn-default">Se Connecter</button>
+        </form>
+        <br />
+
+        <p>
+            @Html.ActionLink("S'inscrire", "Register", null, new { @class = "btn btn-default" }) si vous n’avez pas de compte.
+        </p>
+    }
+</section>
+
+<section class="social" id="socialLoginForm">
+    <h2>Utilisez un autre service pour vous connecter.</h2>
+    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
+</section>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

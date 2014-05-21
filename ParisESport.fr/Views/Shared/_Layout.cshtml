@@ -1,0 +1,69 @@
+﻿@using ParisESport.fr.Models
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @*@Scripts.Render("~/bundles/modernizr")*@
+    @System.Web.Optimization.Styles.Render("~/Content/bootstrap.min.css")
+    @System.Web.Optimization.Styles.Render("~/Content/themes/base/jquery-ui.css")
+    @System.Web.Optimization.Scripts.Render("~/Scripts/jquery-2.1.0.js")
+    @System.Web.Optimization.Scripts.Render("~/Scripts/jquery-ui-1.10.4.min.js")
+    @System.Web.Optimization.Scripts.Render("~/Scripts/MicrosoftAjax.debug.js")
+    @System.Web.Optimization.Scripts.Render("~/Scripts/MicrosoftMvcAjax.debug.js")
+    @System.Web.Optimization.Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+    @System.Web.Optimization.Scripts.Render("~/Scripts/bootstrap.min.js")
+</head>
+<body>
+    <header>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p class="site-title">@Html.ActionLink("Paris eSport en ligne", "Index", "Home")</p>
+            </div>
+            <div class="float-right">
+                <section id="login">
+                    @Html.Partial("_LoginPartial")
+                </section>
+                <nav>
+                    <ul id="menu">
+                        <li>@Html.ActionLink("Accueil", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Les équipes", "Index", "Equipes")</li>
+                        <li>@Html.ActionLink("Les Tournois", "Index", "Tournois")</li>
+                        <li>@Html.ActionLink("Les matchs", "Index", "Matchs")</li>
+                        @{
+                            paris_e_sportEntities db = new paris_e_sportEntities();
+                            bool isAdmin = (from i in db.UserProfile
+                                            where i.UserName == WebSecurity.CurrentUserName
+                                            select i.User_infos.FirstOrDefault().admin).FirstOrDefault();
+                        }
+                        @if (Request.IsAuthenticated && isAdmin == true)
+                        {
+                            <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <div id="body">
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+    <footer>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p>&copy; @DateTime.Now.Year - Paris-eSport.fr</p>
+            </div>
+        </div>
+    </footer>
+
+
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @RenderSection("scripts", required: false)
+</body>
+</html>

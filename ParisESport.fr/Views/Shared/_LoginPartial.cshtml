@@ -1,0 +1,16 @@
+﻿@using ParisESport.fr.Models
+@if (Request.IsAuthenticated) {
+    paris_e_sportEntities db = new paris_e_sportEntities();
+    <text>
+        Bonjour, @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Gérer" })! Vous avez : @db.UserProfile.Where(c=>c.UserName == WebSecurity.CurrentUserName).FirstOrDefault().User_infos.FirstOrDefault().credits Crd
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
+            @Html.AntiForgeryToken()
+            <a href="javascript:document.getElementById('logoutForm').submit()" class="btn btn-default">Se déconnecter</a>
+        }
+    </text>
+} else {
+    <ul>
+        <li>@Html.ActionLink("S'inscrire", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "btn btn-success"} )</li>
+        <li>@Html.ActionLink("Se connecter", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "btn btn-success" })</li>
+    </ul>
+}

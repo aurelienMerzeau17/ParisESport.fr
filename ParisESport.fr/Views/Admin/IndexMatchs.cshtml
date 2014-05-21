@@ -1,0 +1,82 @@
+﻿@using ParisESport.fr.Models;
+@model IEnumerable<ParisESport.fr.Models.Matchs>
+
+@{
+    ViewBag.Title = "Administration des matchs";
+}
+@{
+                            paris_e_sportEntities db = new paris_e_sportEntities();
+                            bool isAdmin = (from i in db.UserProfile
+                                            where i.UserName == WebSecurity.CurrentUserName
+                                            select i.User_infos.FirstOrDefault().admin).FirstOrDefault();
+}
+@if (Request.IsAuthenticated && isAdmin == true)
+                        {
+<h2>@ViewBag.Title</h2>
+    <br />
+    <div class="content-wrapper">
+        <div class="float-left">
+            <nav>
+                <ul id="menu">
+                    <li>@Html.ActionLink("Equipes", "IndexEquipes")</li>
+                    <li>@Html.ActionLink("Tournois", "IndexTournois")</li>
+                    <li>@Html.ActionLink("Matchs", "IndexMatchs")</li>
+                    <li>@Html.ActionLink("Jeux", "IndexJeux")</li>
+                    <li>@Html.ActionLink("Créditer les utilisateurs", "Crediter")</li>                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <br />
+    <br />
+
+@*<p>
+    @Html.ActionLink("Create New", "CreateMatchs")
+</p>*@
+    <table class="table table-hover">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Equipes.nom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Equipes1.nom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.resultat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.date)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Equipes.nom)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Equipes1.nom)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.resultat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.date)
+                </td>
+                <td>
+                    @Html.ActionLink("Editer", "EditMatchs", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "DetailsMatchs", new { id = item.Id }) |
+                    @Html.ActionLink("Supprimer", "DeleteMatchs", new { id = item.Id })|
+                    @Html.ActionLink("Cloturer", "CloturerMatchs", new { id = item.Id })
+                </td>
+            </tr>
+        }
+
+    </table>
+                        }
+else
+{
+    Response.Redirect("~/Admin/Login");
+}

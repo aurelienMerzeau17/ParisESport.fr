@@ -1,0 +1,59 @@
+﻿@using ParisESport.fr.Models;
+@model ParisESport.fr.Models.Tournois
+
+@{
+    ViewBag.Title = "Delete";
+}
+@{
+                            paris_e_sportEntities db = new paris_e_sportEntities();
+                            bool isAdmin = (from i in db.UserProfile
+                                            where i.UserName == WebSecurity.CurrentUserName
+                                            select i.User_infos.FirstOrDefault().admin).FirstOrDefault();
+}
+@if (Request.IsAuthenticated && isAdmin == true)
+                        {
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Tournois</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.nom)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.nom)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.date)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.date)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.description)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.description)
+    </div>
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Jeux.nom)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Jeux.nom)
+    </div>
+</fieldset>
+using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "IndexTournois")
+    </p>
+}
+                        }
+else
+{
+    Response.Redirect("~/Admin/Login");
+}

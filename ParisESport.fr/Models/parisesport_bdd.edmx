@@ -1,0 +1,722 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="paris_e_sportModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="equipe_tournoi">
+          <Key>
+            <PropertyRef Name="equipe_id" />
+            <PropertyRef Name="tournoi_id" />
+          </Key>
+          <Property Name="equipe_id" Type="int" Nullable="false" />
+          <Property Name="tournoi_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Equipes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nom" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="pays" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="Jeux">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nom" Type="varchar" MaxLength="50" />
+          <Property Name="description" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="Matchs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_Eq1" Type="int" Nullable="false" />
+          <Property Name="id_Eq2" Type="int" Nullable="false" />
+          <Property Name="resultat" Type="int" Nullable="false" />
+          <Property Name="date" Type="datetime" Nullable="false" />
+          <Property Name="tournoi_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="paris_user">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="match_id" Type="int" Nullable="false" />
+          <Property Name="resultat_parie" Type="int" Nullable="false" />
+          <Property Name="credit_parie" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tournois">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nom" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="date" Type="datetime" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="500" />
+          <Property Name="jeu_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User_infos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="mail" Type="varchar" MaxLength="50" />
+          <Property Name="credits" Type="float" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="admin" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="56" Nullable="false" />
+        </EntityType>
+        <EntityType Name="webpages_Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="ConfirmationToken" Type="nvarchar" MaxLength="128" />
+          <Property Name="IsConfirmed" Type="bit" />
+          <Property Name="LastPasswordFailureDate" Type="datetime" />
+          <Property Name="PasswordFailuresSinceLastSuccess" Type="int" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="PasswordChangedDate" Type="datetime" />
+          <Property Name="PasswordSalt" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="PasswordVerificationToken" Type="nvarchar" MaxLength="128" />
+          <Property Name="PasswordVerificationTokenExpirationDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="webpages_OAuthMembership">
+          <Key>
+            <PropertyRef Name="Provider" />
+            <PropertyRef Name="ProviderUserId" />
+          </Key>
+          <Property Name="Provider" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="ProviderUserId" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="webpages_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="webpages_UsersInRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__equipe_to__equip__2D27B809">
+          <End Role="Equipes" Type="Self.Equipes" Multiplicity="1" />
+          <End Role="equipe_tournoi" Type="Self.equipe_tournoi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="equipe_tournoi">
+              <PropertyRef Name="equipe_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__equipe_to__tourn__2E1BDC42">
+          <End Role="Tournois" Type="Self.Tournois" Multiplicity="1" />
+          <End Role="equipe_tournoi" Type="Self.equipe_tournoi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tournois">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="equipe_tournoi">
+              <PropertyRef Name="tournoi_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Eq1_ToEquipes">
+          <End Role="Equipes" Type="Self.Equipes" Multiplicity="1" />
+          <End Role="Matchs" Type="Self.Matchs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Matchs">
+              <PropertyRef Name="id_Eq1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Eq2_ToEquipes">
+          <End Role="Equipes" Type="Self.Equipes" Multiplicity="1" />
+          <End Role="Matchs" Type="Self.Matchs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Matchs">
+              <PropertyRef Name="id_Eq2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_jeu_id">
+          <End Role="Jeux" Type="Self.Jeux" Multiplicity="1" />
+          <End Role="Tournois" Type="Self.Tournois" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Jeux">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tournois">
+              <PropertyRef Name="jeu_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_match_id">
+          <End Role="Matchs" Type="Self.Matchs" Multiplicity="1" />
+          <End Role="paris_user" Type="Self.paris_user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Matchs">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="paris_user">
+              <PropertyRef Name="match_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_RoleId">
+          <End Role="webpages_Roles" Type="Self.webpages_Roles" Multiplicity="1" />
+          <End Role="webpages_UsersInRoles" Type="Self.webpages_UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="webpages_Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="webpages_UsersInRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_tournoi_m_id">
+          <End Role="Tournois" Type="Self.Tournois" Multiplicity="1" />
+          <End Role="Matchs" Type="Self.Matchs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tournois">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Matchs">
+              <PropertyRef Name="tournoi_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_user_id">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="User_infos" Type="Self.User_infos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="User_infos">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_user_t_id">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="paris_user" Type="Self.paris_user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="paris_user">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UserId">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="webpages_UsersInRoles" Type="Self.webpages_UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="webpages_UsersInRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="paris_e_sportModelStoreContainer">
+          <EntitySet Name="equipe_tournoi" EntityType="Self.equipe_tournoi" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Equipes" EntityType="Self.Equipes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Jeux" EntityType="Self.Jeux" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Matchs" EntityType="Self.Matchs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="paris_user" EntityType="Self.paris_user" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tournois" EntityType="Self.Tournois" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User_infos" EntityType="Self.User_infos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="webpages_Membership" EntityType="Self.webpages_Membership" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="webpages_OAuthMembership" EntityType="Self.webpages_OAuthMembership" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="webpages_Roles" EntityType="Self.webpages_Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="webpages_UsersInRoles" EntityType="Self.webpages_UsersInRoles" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__equipe_to__equip__2D27B809" Association="Self.FK__equipe_to__equip__2D27B809">
+            <End Role="Equipes" EntitySet="Equipes" />
+            <End Role="equipe_tournoi" EntitySet="equipe_tournoi" />
+          </AssociationSet>
+          <AssociationSet Name="FK__equipe_to__tourn__2E1BDC42" Association="Self.FK__equipe_to__tourn__2E1BDC42">
+            <End Role="Tournois" EntitySet="Tournois" />
+            <End Role="equipe_tournoi" EntitySet="equipe_tournoi" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Eq1_ToEquipes" Association="Self.FK_Eq1_ToEquipes">
+            <End Role="Equipes" EntitySet="Equipes" />
+            <End Role="Matchs" EntitySet="Matchs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Eq2_ToEquipes" Association="Self.FK_Eq2_ToEquipes">
+            <End Role="Equipes" EntitySet="Equipes" />
+            <End Role="Matchs" EntitySet="Matchs" />
+          </AssociationSet>
+          <AssociationSet Name="fk_jeu_id" Association="Self.fk_jeu_id">
+            <End Role="Jeux" EntitySet="Jeux" />
+            <End Role="Tournois" EntitySet="Tournois" />
+          </AssociationSet>
+          <AssociationSet Name="fk_match_id" Association="Self.fk_match_id">
+            <End Role="Matchs" EntitySet="Matchs" />
+            <End Role="paris_user" EntitySet="paris_user" />
+          </AssociationSet>
+          <AssociationSet Name="fk_RoleId" Association="Self.fk_RoleId">
+            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
+            <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="fk_tournoi_m_id" Association="Self.fk_tournoi_m_id">
+            <End Role="Tournois" EntitySet="Tournois" />
+            <End Role="Matchs" EntitySet="Matchs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_id" Association="Self.FK_user_id">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="User_infos" EntitySet="User_infos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_user_t_id" Association="Self.fk_user_t_id">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="paris_user" EntitySet="paris_user" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UserId" Association="Self.fk_UserId">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="paris_e_sportModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Equipes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="pays" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Matchs" Relationship="Self.FK_Eq1_ToEquipes" FromRole="Equipes" ToRole="Matchs" />
+          <NavigationProperty Name="Matchs1" Relationship="Self.FK_Eq2_ToEquipes" FromRole="Equipes" ToRole="Matchs" />
+          <NavigationProperty Name="Tournois" Relationship="Self.equipe_tournoi" FromRole="Equipes" ToRole="Tournois" />
+        </EntityType>
+        <EntityType Name="Jeux">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Tournois" Relationship="Self.fk_jeu_id" FromRole="Jeux" ToRole="Tournois" />
+        </EntityType>
+        <EntityType Name="Matchs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_Eq1" Type="Int32" Nullable="false" />
+          <Property Name="id_Eq2" Type="Int32" Nullable="false" />
+          <Property Name="resultat" Type="Int32" Nullable="false" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="tournoi_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Equipes" Relationship="Self.FK_Eq1_ToEquipes" FromRole="Matchs" ToRole="Equipes" />
+          <NavigationProperty Name="Equipes1" Relationship="Self.FK_Eq2_ToEquipes" FromRole="Matchs" ToRole="Equipes" />
+          <NavigationProperty Name="paris_user" Relationship="Self.fk_match_id" FromRole="Matchs" ToRole="paris_user" />
+          <NavigationProperty Name="Tournois" Relationship="Self.fk_tournoi_m_id" FromRole="Matchs" ToRole="Tournois" />
+        </EntityType>
+        <EntityType Name="paris_user">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="match_id" Type="Int32" Nullable="false" />
+          <Property Name="resultat_parie" Type="Int32" Nullable="false" />
+          <Property Name="credit_parie" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Matchs" Relationship="Self.fk_match_id" FromRole="paris_user" ToRole="Matchs" />
+          <NavigationProperty Name="UserProfile" Relationship="Self.fk_user_t_id" FromRole="paris_user" ToRole="UserProfile" />
+        </EntityType>
+        <EntityType Name="Tournois">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="jeu_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Jeux" Relationship="Self.fk_jeu_id" FromRole="Tournois" ToRole="Jeux" />
+          <NavigationProperty Name="Matchs" Relationship="Self.fk_tournoi_m_id" FromRole="Tournois" ToRole="Matchs" />
+          <NavigationProperty Name="Equipes" Relationship="Self.equipe_tournoi" FromRole="Tournois" ToRole="Equipes" />
+        </EntityType>
+        <EntityType Name="User_infos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="mail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="credits" Type="Double" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="admin" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="UserProfile" Relationship="Self.FK_user_id" FromRole="User_infos" ToRole="UserProfile" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="56" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="paris_user" Relationship="Self.fk_user_t_id" FromRole="UserProfile" ToRole="paris_user" />
+          <NavigationProperty Name="User_infos" Relationship="Self.FK_user_id" FromRole="UserProfile" ToRole="User_infos" />
+          <NavigationProperty Name="webpages_Roles" Relationship="Self.webpages_UsersInRoles" FromRole="UserProfile" ToRole="webpages_Roles" />
+        </EntityType>
+        <EntityType Name="webpages_Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="ConfirmationToken" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IsConfirmed" Type="Boolean" />
+          <Property Name="LastPasswordFailureDate" Type="DateTime" Precision="3" />
+          <Property Name="PasswordFailuresSinceLastSuccess" Type="Int32" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PasswordChangedDate" Type="DateTime" Precision="3" />
+          <Property Name="PasswordSalt" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PasswordVerificationToken" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordVerificationTokenExpirationDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="webpages_OAuthMembership">
+          <Key>
+            <PropertyRef Name="Provider" />
+            <PropertyRef Name="ProviderUserId" />
+          </Key>
+          <Property Name="Provider" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProviderUserId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="webpages_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="UserProfile" Relationship="Self.webpages_UsersInRoles" FromRole="webpages_Roles" ToRole="UserProfile" />
+        </EntityType>
+        <Association Name="FK_Eq1_ToEquipes">
+          <End Role="Equipes" Type="Self.Equipes" Multiplicity="1" />
+          <End Role="Matchs" Type="Self.Matchs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Matchs">
+              <PropertyRef Name="id_Eq1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Eq2_ToEquipes">
+          <End Role="Equipes" Type="Self.Equipes" Multiplicity="1" />
+          <End Role="Matchs" Type="Self.Matchs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Matchs">
+              <PropertyRef Name="id_Eq2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_jeu_id">
+          <End Role="Jeux" Type="Self.Jeux" Multiplicity="1" />
+          <End Role="Tournois" Type="Self.Tournois" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Jeux">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tournois">
+              <PropertyRef Name="jeu_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_match_id">
+          <End Role="Matchs" Type="Self.Matchs" Multiplicity="1" />
+          <End Role="paris_user" Type="Self.paris_user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Matchs">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="paris_user">
+              <PropertyRef Name="match_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_tournoi_m_id">
+          <End Role="Tournois" Type="Self.Tournois" Multiplicity="1" />
+          <End Role="Matchs" Type="Self.Matchs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tournois">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Matchs">
+              <PropertyRef Name="tournoi_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_user_t_id">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="paris_user" Type="Self.paris_user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="paris_user">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_user_id">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="1" />
+          <End Role="User_infos" Type="Self.User_infos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="User_infos">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="equipe_tournoi">
+          <End Role="Equipes" Type="Self.Equipes" Multiplicity="*" />
+          <End Role="Tournois" Type="Self.Tournois" Multiplicity="*" />
+        </Association>
+        <Association Name="webpages_UsersInRoles">
+          <End Role="webpages_Roles" Type="Self.webpages_Roles" Multiplicity="*" />
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="paris_e_sportEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Equipes" EntityType="Self.Equipes" />
+          <EntitySet Name="Jeux" EntityType="Self.Jeux" />
+          <EntitySet Name="Matchs" EntityType="Self.Matchs" />
+          <EntitySet Name="paris_user" EntityType="Self.paris_user" />
+          <EntitySet Name="Tournois" EntityType="Self.Tournois" />
+          <EntitySet Name="User_infos" EntityType="Self.User_infos" />
+          <EntitySet Name="UserProfile" EntityType="Self.UserProfile" />
+          <EntitySet Name="webpages_Membership" EntityType="Self.webpages_Membership" />
+          <EntitySet Name="webpages_OAuthMembership" EntityType="Self.webpages_OAuthMembership" />
+          <EntitySet Name="webpages_Roles" EntityType="Self.webpages_Roles" />
+          <AssociationSet Name="FK_Eq1_ToEquipes" Association="Self.FK_Eq1_ToEquipes">
+            <End Role="Equipes" EntitySet="Equipes" />
+            <End Role="Matchs" EntitySet="Matchs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Eq2_ToEquipes" Association="Self.FK_Eq2_ToEquipes">
+            <End Role="Equipes" EntitySet="Equipes" />
+            <End Role="Matchs" EntitySet="Matchs" />
+          </AssociationSet>
+          <AssociationSet Name="fk_jeu_id" Association="Self.fk_jeu_id">
+            <End Role="Jeux" EntitySet="Jeux" />
+            <End Role="Tournois" EntitySet="Tournois" />
+          </AssociationSet>
+          <AssociationSet Name="fk_match_id" Association="Self.fk_match_id">
+            <End Role="Matchs" EntitySet="Matchs" />
+            <End Role="paris_user" EntitySet="paris_user" />
+          </AssociationSet>
+          <AssociationSet Name="fk_tournoi_m_id" Association="Self.fk_tournoi_m_id">
+            <End Role="Tournois" EntitySet="Tournois" />
+            <End Role="Matchs" EntitySet="Matchs" />
+          </AssociationSet>
+          <AssociationSet Name="fk_user_t_id" Association="Self.fk_user_t_id">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="paris_user" EntitySet="paris_user" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_id" Association="Self.FK_user_id">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="User_infos" EntitySet="User_infos" />
+          </AssociationSet>
+          <AssociationSet Name="equipe_tournoi" Association="Self.equipe_tournoi">
+            <End Role="Equipes" EntitySet="Equipes" />
+            <End Role="Tournois" EntitySet="Tournois" />
+          </AssociationSet>
+          <AssociationSet Name="webpages_UsersInRoles" Association="Self.webpages_UsersInRoles">
+            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
+            <End Role="UserProfile" EntitySet="UserProfile" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="paris_e_sportModelStoreContainer" CdmEntityContainer="paris_e_sportEntities">
+          <EntitySetMapping Name="Equipes">
+            <EntityTypeMapping TypeName="paris_e_sportModel.Equipes">
+              <MappingFragment StoreEntitySet="Equipes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="nom" ColumnName="nom" />
+                <ScalarProperty Name="pays" ColumnName="pays" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Jeux">
+            <EntityTypeMapping TypeName="paris_e_sportModel.Jeux">
+              <MappingFragment StoreEntitySet="Jeux">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="nom" ColumnName="nom" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Matchs">
+            <EntityTypeMapping TypeName="paris_e_sportModel.Matchs">
+              <MappingFragment StoreEntitySet="Matchs">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="id_Eq1" ColumnName="id_Eq1" />
+                <ScalarProperty Name="id_Eq2" ColumnName="id_Eq2" />
+                <ScalarProperty Name="resultat" ColumnName="resultat" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="tournoi_id" ColumnName="tournoi_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="paris_user">
+            <EntityTypeMapping TypeName="paris_e_sportModel.paris_user">
+              <MappingFragment StoreEntitySet="paris_user">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="match_id" ColumnName="match_id" />
+                <ScalarProperty Name="resultat_parie" ColumnName="resultat_parie" />
+                <ScalarProperty Name="credit_parie" ColumnName="credit_parie" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tournois">
+            <EntityTypeMapping TypeName="paris_e_sportModel.Tournois">
+              <MappingFragment StoreEntitySet="Tournois">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="nom" ColumnName="nom" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="jeu_id" ColumnName="jeu_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User_infos">
+            <EntityTypeMapping TypeName="paris_e_sportModel.User_infos">
+              <MappingFragment StoreEntitySet="User_infos">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="mail" ColumnName="mail" />
+                <ScalarProperty Name="credits" ColumnName="credits" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="admin" ColumnName="admin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfile">
+            <EntityTypeMapping TypeName="paris_e_sportModel.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfile">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_Membership">
+            <EntityTypeMapping TypeName="paris_e_sportModel.webpages_Membership">
+              <MappingFragment StoreEntitySet="webpages_Membership">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ConfirmationToken" ColumnName="ConfirmationToken" />
+                <ScalarProperty Name="IsConfirmed" ColumnName="IsConfirmed" />
+                <ScalarProperty Name="LastPasswordFailureDate" ColumnName="LastPasswordFailureDate" />
+                <ScalarProperty Name="PasswordFailuresSinceLastSuccess" ColumnName="PasswordFailuresSinceLastSuccess" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="PasswordChangedDate" ColumnName="PasswordChangedDate" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="PasswordVerificationToken" ColumnName="PasswordVerificationToken" />
+                <ScalarProperty Name="PasswordVerificationTokenExpirationDate" ColumnName="PasswordVerificationTokenExpirationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_OAuthMembership">
+            <EntityTypeMapping TypeName="paris_e_sportModel.webpages_OAuthMembership">
+              <MappingFragment StoreEntitySet="webpages_OAuthMembership">
+                <ScalarProperty Name="Provider" ColumnName="Provider" />
+                <ScalarProperty Name="ProviderUserId" ColumnName="ProviderUserId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_Roles">
+            <EntityTypeMapping TypeName="paris_e_sportModel.webpages_Roles">
+              <MappingFragment StoreEntitySet="webpages_Roles">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="equipe_tournoi" TypeName="paris_e_sportModel.equipe_tournoi" StoreEntitySet="equipe_tournoi">
+            <EndProperty Name="Equipes">
+              <ScalarProperty Name="Id" ColumnName="equipe_id" />
+            </EndProperty>
+            <EndProperty Name="Tournois">
+              <ScalarProperty Name="Id" ColumnName="tournoi_id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="webpages_UsersInRoles" TypeName="paris_e_sportModel.webpages_UsersInRoles" StoreEntitySet="webpages_UsersInRoles">
+            <EndProperty Name="webpages_Roles">
+              <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+            </EndProperty>
+            <EndProperty Name="UserProfile">
+              <ScalarProperty Name="UserId" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,93 @@
+﻿@using ParisESport.fr.Models;
+@model IEnumerable<ParisESport.fr.Models.Matchs>
+@{
+    ViewBag.Title = "Les matchs";
+    paris_e_sportEntities db = new paris_e_sportEntities();
+}
+
+<h2>Les prochains matchs</h2>
+
+<table class="table table-hover">
+    <tr>
+        <th>
+            Match :
+        </th>
+        <th>
+            Résultat :
+        </th>
+        <th>
+            Date :
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+
+        <tr>
+            <td>
+                @Html.Label(item.Equipes.nom + " VS " + item.Equipes1.nom)
+            </td>
+            <td>
+                @if (item.resultat == 0)
+                {
+                    @Html.Label("Victoire de : " + item.Equipes.nom);
+                }
+                else if (item.resultat == 2)
+                {
+                    @Html.Label("Victoire de : " + item.Equipes1.nom);
+                }
+                else
+                {
+                    @Html.Label("Non joué");
+                }
+            </td>
+            <td>
+                <p>@item.date.ToShortDateString()</p>
+            </td>
+        </tr>
+        <tr>
+            @{
+                List<paris_user> listpu = db.paris_user.Where(c => c.match_id == item.Id).ToList();
+                int nbparismatch = listpu.Count();
+                int nbp1 = listpu.Where(c => c.resultat_parie == 0).Count();
+                int nbp2 = listpu.Where(c => c.resultat_parie == 2).Count();
+                double f;
+                if (nbp1 != 0 && nbp2 != 0)
+                {
+                    f = nbp1 / nbp2;
+                }
+                else
+                {
+                    f = 1;
+                }
+                Fraction frac = new Fraction(f);
+
+            }
+            <td>
+                Cote : @Html.Label(frac.Numerator + " / " + frac.Denominator)
+            </td>
+
+            <td>
+                @if (Request.IsAuthenticated)
+                {
+                    paris_user pu = db.paris_user.Where(c => c.user_id == db.UserProfile.Where(i => i.UserName == WebSecurity.CurrentUserName).FirstOrDefault().UserId && c.match_id == item.Id).FirstOrDefault();
+                if (pu != null)
+                {
+                    <p>Vous avez déja parié sur ce match</p>
+                }
+                else
+                {
+                    @Ajax.ActionLink("Parier", "Parier", new { id = item.Id }, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "paris" }, new { @class = "btn btn-success btn-lg btn-parier" })
+                }
+                }
+                else
+                {
+                    <p>Inscrivez-vous ou connectez-vous pour pouvoir parier.</p>
+                }
+            </td>
+            <td></td>
+        </tr>
+    }
+
+</table>
+<div id="paris"></div>

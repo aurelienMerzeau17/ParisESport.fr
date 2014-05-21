@@ -1,0 +1,43 @@
+﻿@model ParisESport.fr.Models.Matchs
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Matchs</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.id_Eq1)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.id_Eq1)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.id_Eq2)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.id_Eq2)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.resultat)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.resultat)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.date)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.date)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

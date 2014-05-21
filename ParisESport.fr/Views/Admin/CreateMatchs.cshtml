@@ -1,0 +1,78 @@
+﻿@using ParisESport.fr.Models;
+
+@model ParisESport.fr.Models.Matchs
+
+@{
+    ViewBag.Title = "Create";
+}
+@{
+                            paris_e_sportEntities db = new paris_e_sportEntities();
+                            bool isAdmin = (from i in db.UserProfile
+                                            where i.UserName == WebSecurity.CurrentUserName
+                                            select i.User_infos.FirstOrDefault().admin).FirstOrDefault();
+}
+@if (Request.IsAuthenticated && isAdmin == true)
+                        {
+<h2>Create</h2>
+
+using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Matchs</legend>
+        @Html.Hidden("idtournoi", Session["idTournoi"])
+        <div class="editor-label">
+            @Html.LabelFor(model => model.id_Eq1, "Equipes")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("id_Eq1", String.Empty)
+            @Html.ValidationMessageFor(model => model.id_Eq1)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.id_Eq2, "Equipes1")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("id_Eq2", String.Empty)
+            @Html.ValidationMessageFor(model => model.id_Eq2)
+        </div>
+
+        @*<div class="editor-label">
+            @Html.LabelFor(model => model.tournoi_id, "Tournoi")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("tournoi_id", String.Empty)
+            @Html.ValidationMessageFor(model => model.tournoi_id)
+        </div>*@
+
+        @*<div class="editor-label">
+            @Html.LabelFor(model => model.resultat)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.resultat)
+            @Html.ValidationMessageFor(model => model.resultat)
+        </div>*@
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.date)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.date)
+            @Html.ValidationMessageFor(model => model.date)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "IndexMatchs")
+</div>
+                        }
+else
+{
+    Response.Redirect("~/Admin/Login");
+}

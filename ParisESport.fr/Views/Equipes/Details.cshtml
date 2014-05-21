@@ -1,0 +1,36 @@
+﻿@model ParisESport.fr.Models.Equipes
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Equipes</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.nom)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.nom)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.pays)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.pays)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.description)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.description)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

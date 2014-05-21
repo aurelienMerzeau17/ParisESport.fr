@@ -1,0 +1,28 @@
+﻿@model ParisESport.fr.Models.Matchs
+
+@using (Html.BeginForm("ParisValide", "Matchs", FormMethod.Post, new { style="height:250px"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="editor-label">
+        @Html.Label("Montant de votre paris :")
+    </div>
+    <div class="editor-field">
+        <input type="text" name="valCred" required style="width:150px;" />
+    </div>
+    @Html.Hidden("idmatch", Model.Id)
+    @Html.Label("Victoire de : ")
+    <p>
+        <input type="submit" class="btn btn-default" value="@Model.Equipes.nom" name="eqParis" />
+    </p>
+    <p>
+        <input type="submit" class="btn btn-default" value="@Model.Equipes1.nom" name="eqParis" />
+    </p>
+}
+<script type="text/javascript">
+    $(function () {
+        $("#paris").dialog({
+            modal: true
+        });
+    });
+</script>

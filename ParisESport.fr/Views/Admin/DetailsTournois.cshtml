@@ -1,0 +1,91 @@
+﻿@using ParisESport.fr.Models;
+@model ParisESport.fr.Models.Tournois
+
+@{
+    ViewBag.Title = "Details";
+}
+@{
+                            paris_e_sportEntities db = new paris_e_sportEntities();
+                            bool isAdmin = (from i in db.UserProfile
+                                            where i.UserName == WebSecurity.CurrentUserName
+                                            select i.User_infos.FirstOrDefault().admin).FirstOrDefault();
+}
+@if (Request.IsAuthenticated && isAdmin == true)
+                        {
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Tournois</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.nom)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.nom)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.date)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.date)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.description)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.description)
+    </div>
+
+    <div class="display-label">
+         Liste Des Matchs
+    </div>
+    <div class="display-field">
+        <table class="table table-hover">
+            @foreach (ParisESport.fr.Models.Matchs item in Model.Matchs)
+            {
+                <tr>
+                    <th>
+                        @item.Equipes.nom
+                    </th>
+                    <th>
+                        <h3>VS</h3>
+                    </th>
+                    <th>
+                        @item.Equipes1.nom
+                    </th>
+                    <th>
+                        @item.date
+                    </th>
+                    <th>
+                        @if (item.resultat == 0)
+                        {
+                            @Html.Display("Victoire de " + item.Equipes.nom);
+                        }
+                        else if (item.resultat == 2)
+                        {
+                            @Html.Display("Victoire de " + item.Equipes1.nom);
+                        }
+                    </th>
+                </tr>
+            }
+        </table>   
+        
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Jeux.nom)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Jeux.nom)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Back to List", "IndexTournois")
+</p>
+                        }
+else
+{
+    Response.Redirect("~/Admin/Login");
+}
